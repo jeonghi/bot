@@ -1,13 +1,8 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
-const { token , openai_api_key} = require('./config.json');
-const {Configuration, OpenAIApi} = require("openai");
-const configuration = new Configuration({
-    apiKey: openai_api_key,
-});
-const openai = new OpenAIApi(configuration);
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const { token } = require('./config.json');
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages] });
 
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
@@ -36,6 +31,5 @@ client.on(Events.InteractionCreate, async interaction => {
         await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
     }
 });
-
 
 client.login(token);
